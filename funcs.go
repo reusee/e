@@ -1,6 +1,10 @@
 package e
 
-import "fmt"
+import (
+	"fmt"
+
+	"golang.org/x/exp/errors"
+)
 
 type Err struct {
 	Pkg  string
@@ -13,6 +17,19 @@ func (e Err) Error() string {
 		return fmt.Sprintf("%s: %s", e.Pkg, e.Info)
 	}
 	return fmt.Sprintf("%s: %s\n%v", e.Pkg, e.Info, e.Prev)
+}
+
+var _ errors.Wrapper = Err{}
+
+func (e Err) Unwrap() error {
+	return e.Prev
+}
+
+var _ errors.Formatter = Err{}
+
+func (e Err) Format(p errors.Printer) error {
+	p.Printf("%s: %s", e.Pkg, e.Info)
+	return e.Prev
 }
 
 func WithPackage(
