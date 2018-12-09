@@ -9,6 +9,10 @@ type thrownError struct {
 	sig int64
 }
 
+func (t thrownError) String() string {
+	return t.err.Error()
+}
+
 func New(
 	newErr ErrFunc,
 ) (
