@@ -30,6 +30,9 @@ func New(
 	}
 
 	handle = func(errp *error) {
+		if errp == nil {
+			return
+		}
 		if p := recover(); p != nil {
 			if e, ok := p.(thrownError); ok && e.sig == sig {
 				*errp = e.err
