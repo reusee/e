@@ -27,7 +27,7 @@ func (e Err) Unwrap() error {
 
 var _ errors.Formatter = Err{}
 
-func (e Err) Format(p errors.Printer) error {
+func (e Err) FormatError(p errors.Printer) error {
 	p.Printf("%s: %s", e.Pkg, e.Info)
 	return e.Prev
 }
