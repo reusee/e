@@ -3,7 +3,7 @@ package e
 import (
 	"fmt"
 
-	"golang.org/x/exp/errors"
+	"errors"
 )
 
 type Err struct {
