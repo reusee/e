@@ -2,7 +2,7 @@ package e
 
 import "math/rand"
 
-type ErrFunc func(error, ...interface{}) error
+type ErrFunc = func(error, ...interface{}) error
 
 type thrownError struct {
 	err error
