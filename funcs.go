@@ -19,9 +19,12 @@ func (e Err) Error() string {
 	var b strings.Builder
 	if e.Pkg != "" {
 		b.WriteString(e.Pkg)
-		b.WriteString(": ")
+		b.WriteString(":")
 	}
-	b.WriteString(e.Info)
+	if e.Info != "" {
+		b.WriteString(" ")
+		b.WriteString(e.Info)
+	}
 	if e.File != "" {
 		b.WriteString(" (")
 		b.WriteString(e.File)
