@@ -2,7 +2,7 @@ package e
 
 import "math/rand"
 
-type ErrFunc = func(error, ...interface{}) error
+type MakeErr = func(error, ...interface{}) error
 
 type thrownError struct {
 	err error
@@ -14,18 +14,19 @@ func (t thrownError) String() string {
 }
 
 func New(
-	newErr ErrFunc,
+	makeErr MakeErr,
 ) (
-	makeErr func(prev error, args ...interface{}) error,
-	wrapErr func(err error, args ...interface{}) error,
-	check func(err error),
+	check func(err error, args ...interface{}),
 	handle func(errp *error),
 ) {
 
 	sig := rand.Int63()
 
-	check = func(err error) {
+	check = func(err error, args ...interface{}) {
 		if err != nil {
+			if len(args) > 0 {
+				err = makeErr(err, args...)
+			}
 			panic(thrownError{
 				err: err,
 				sig: sig,
@@ -44,17 +45,6 @@ func New(
 				panic(p)
 			}
 		}
-	}
-
-	makeErr = func(prev error, args ...interface{}) error {
-		return newErr(prev, args...)
-	}
-
-	wrapErr = func(err error, args ...interface{}) error {
-		if err == nil {
-			return nil
-		}
-		return newErr(err, args...)
 	}
 
 	return
