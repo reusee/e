@@ -17,7 +17,7 @@ func New(
 	makeErr MakeErr,
 ) (
 	check func(err error, args ...interface{}),
-	handle func(errp *error),
+	handle func(errp *error, args ...interface{}),
 ) {
 
 	sig := rand.Int63()
@@ -34,12 +34,15 @@ func New(
 		}
 	}
 
-	handle = func(errp *error) {
+	handle = func(errp *error, args ...interface{}) {
 		if errp == nil {
 			return
 		}
 		if p := recover(); p != nil {
 			if e, ok := p.(thrownError); ok && e.sig == sig {
+				if len(args) > 0 {
+					e.err = makeErr(e.err, args...)
+				}
 				*errp = e.err
 			} else {
 				panic(p)
