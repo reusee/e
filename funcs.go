@@ -95,9 +95,3 @@ func (f Func) WithStack() Func {
 		return er
 	}
 }
-
-func WithPackage(
-	pkg string,
-) Func {
-	return Default.WithName(pkg).WithStack()
-}
