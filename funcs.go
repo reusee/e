@@ -39,6 +39,10 @@ func (e Err) Error() string {
 	return b.String()
 }
 
+func (e Err) Unwrap() error {
+	return e.Prev
+}
+
 type Func func(error, ...interface{}) error
 
 var Default = Func(func(err error, args ...interface{}) error {
