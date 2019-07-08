@@ -84,8 +84,7 @@ func (f Func) WithStack() Func {
 			frames := runtime.CallersFrames(pcs[:n])
 			for {
 				frame, more := frames.Next()
-				if !strings.HasSuffix(frame.File, "funcs.go") &&
-					!strings.HasSuffix(frame.File, "error.go") {
+				if !strings.HasPrefix(frame.Function, "github.com/reusee/e/v2") {
 					er.File = frame.File
 					er.Line = frame.Line
 					break loop_callers
