@@ -9,7 +9,7 @@ type thrownError struct {
 	sig int64
 }
 
-func (t thrownError) String() string {
+func (t *thrownError) String() string {
 	return t.err.Error()
 }
 
@@ -27,7 +27,7 @@ func New(
 			if len(args) > 0 {
 				err = makeErr(err, args...)
 			}
-			panic(thrownError{
+			panic(&thrownError{
 				err: err,
 				sig: sig,
 			})
@@ -39,7 +39,7 @@ func New(
 			return
 		}
 		if p := recover(); p != nil {
-			if e, ok := p.(thrownError); ok && e.sig == sig {
+			if e, ok := p.(*thrownError); ok && e.sig == sig {
 				if len(args) > 0 {
 					e.err = makeErr(e.err, args...)
 				}
