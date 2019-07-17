@@ -17,7 +17,7 @@ func New(
 	makeErr MakeErr,
 ) (
 	check func(err error, args ...interface{}),
-	handle func(errp *error, args ...interface{}),
+	catch func(errp *error, args ...interface{}),
 ) {
 
 	sig := rand.Int63()
@@ -34,7 +34,7 @@ func New(
 		}
 	}
 
-	handle = func(errp *error, args ...interface{}) {
+	catch = func(errp *error, args ...interface{}) {
 		if errp == nil {
 			return
 		}
