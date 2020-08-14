@@ -33,8 +33,8 @@ func TestErrAs(t *testing.T) {
 	}
 	me := Default
 	e := me(pathErr, "wrap")
-	e = me(pathErr, "wrap")
-	e = me(pathErr, "wrap")
+	e = me(e, "wrap")
+	e = me(e, "wrap")
 	var err *os.PathError
 	if !errors.As(e, &err) {
 		t.Fatal()
